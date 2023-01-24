@@ -27,7 +27,7 @@
           register: resultado
 
         - set_fact:
-             network_entity_id: "{{ resultado.internet_gateway[0].id }}"
+             network_entity_id: "{{ resultado.internet_gateways[0].id }}"
 
 
         - name: Actualiza Default Route para Salida a Internet
