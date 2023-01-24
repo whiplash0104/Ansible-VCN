@@ -1,0 +1,38 @@
+- name: Detiene Instancia Autonomous Database
+  hosts: localhost
+  connection: local
+
+  vars_files: vault.yaml
+
+
+  tasks:
+    - block:
+        - name: Lista Todas las VCNs
+          oracle.oci.oci_network_vcn_facts:
+             compartment_id: "{{ compartment_ocid }}"
+             display_name: "{{ display_name }}"
+          register: resultado
+
+        - name: Valida si Existe la VCN
+          assert:
+             that:
+                - resultado.vcns[0].display_name == display_name
+
+        - set_fact:
+             vcns_id: "{{ resultado.vcns[0].id }}"
+
+        - name: Elimina ADB
+          oracle.oci.oci_network_vcn:
+             autonomous_database_id: "{{ vcns_id }}"
+             state: 'absent'
+          register: result
+
+        - name: Valida que la VCN se Elimino
+          assert:
+             that:
+               - result.changed == True
+               - result.vcns.display_name == display_name
+      rescue:
+
+        - fail:
+            msg: "ERROR, No se logro Eliminar Instancia ADB."
