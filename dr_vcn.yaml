@@ -39,7 +39,7 @@
           register: resultado
 
         - set_fact:
-          rt_id: "{{ resultado.route_table.id }}"
+            rt_id: "{{ resultado.route_table.id }}"
 
 
         - name: Valida Creacion de Internet Gateway
