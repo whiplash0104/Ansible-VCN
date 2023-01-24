@@ -1,13 +1,8 @@
-- name: Crea Internet Gateway
+- name: Modifica Default Route
   hosts: localhost
   connection: local
 
   vars_files: vault.yaml
-
-  vars:
-    route_table_rules:
-      - cidr_block: '0.0.0.0/0'
-        network_entity_id: "{{ ig_id }}"
 
   tasks:
     - block:
@@ -25,34 +20,27 @@
         - set_fact:
              default_route_table_id: "{{ resultado.vcns[0].default_route_table_id }}"
              
-        - name: Lista Todos los IG
+        - name: Lista Todos los Internet Gateway
           oracle.oci.oci_network_internet_gateway_facts:
             compartment_id: "{{ compartment_ocid }}"
             display_name: "{{ display_name }}"
           register: resultado
 
         - set_fact:
-             ig_id: "{{ resultado.vcns[0].internet_gateway }}"
+             network_entity_id: "{{ resultado.vcns[0].internet_gateway }}"
 
 
-        - name: Update default route table of VCN to connect internet gateway to the VCN
-          oci_network_route_table:
+        - name: Actualiza Default Route para Salida a Internet
+          oracle.oci.oci_network_route_table:
             id: "{{ default_route_table_id }}"
-            route_rules: "{{ route_table_rules }}"
+            route_rules:
+            - cidr_block: '0.0.0.0/0'
+              network_entity_id: 
           register: resultado
-
 
         - set_fact:
           rt_id: "{{ resultado.route_table.id }}"
 
-
-
-        - name: Crea Internet Gateway 
-          oracle.oci.oci_network_internet_gateway:
-            compartment_id: "{{ compartment_ocid }}"
-            vcn_id: "{{ vcns_id }}"
-            name: "{{ ig_name }}"
-            is_enabled: true
 
         - name: Valida Creacion de Internet Gateway
           assert:
