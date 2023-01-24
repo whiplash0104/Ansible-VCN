@@ -27,7 +27,7 @@
           register: resultado
 
         - set_fact:
-             network_entity_id: "{{ resultado.vcns[0].internet_gateway }}"
+             network_entity_id: "{{ resultado.internet_gateway[0].id }}"
 
 
         - name: Actualiza Default Route para Salida a Internet
@@ -35,7 +35,7 @@
             id: "{{ default_route_table_id }}"
             route_rules:
             - cidr_block: '0.0.0.0/0'
-              network_entity_id: 
+              network_entity_id: '{{ network_entity_id }}'
           register: resultado
 
         - set_fact:
