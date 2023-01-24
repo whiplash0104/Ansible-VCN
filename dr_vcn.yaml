@@ -23,7 +23,7 @@
         - name: Lista Todos los Internet Gateway
           oracle.oci.oci_network_internet_gateway_facts:
             compartment_id: "{{ compartment_ocid }}"
-            display_name: "{{ display_name }}"
+            display_name: "{{ ig_name }}"
           register: resultado
 
         - set_fact:
