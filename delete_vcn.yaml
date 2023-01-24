@@ -23,7 +23,7 @@
 
         - name: Elimina ADB
           oracle.oci.oci_network_vcn:
-             autonomous_database_id: "{{ vcns_id }}"
+             vcn_id: "{{ vcns_id }}"
              state: 'absent'
           register: result
 
