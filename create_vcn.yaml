@@ -15,22 +15,12 @@
             cidr_block: "{{ vcn_cidr_block }}"
           register: resultado
 
-#        - set_fact:
-#             vcn_id: "{{ resultado.autonomous_database.id }}"
+        - set_fact:
+             vcn_id: "{{ resultado.vcn_id }}"
 
-#        - assert:
-#            that:
-#              - resultado.autonomous_database.lifecycle_state == "AVAILABLE"
-
-        - name: Lista Todas las Instancias de ADB
-          oracle.oci.oci_network_vcn_facts:
-             compartment_id: "{{ compartment_ocid }}"
-             display_name: "{{ display_name }}"
-          register: resultado
-
-        - name: Valida si Existe Nueva Instancia
-          assert:
-             that:
+        - assert:
+            that:
+              - resultado.vcn.lifecycle_state == "AVAILABLE"
       rescue:
 
         - fail:

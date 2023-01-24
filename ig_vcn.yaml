@@ -1,4 +1,4 @@
-- name: Elimina VCN
+- name: Crea Internet Gateway
   hosts: localhost
   connection: local
 
@@ -21,18 +21,17 @@
         - set_fact:
              vcns_id: "{{ resultado.vcns[0].id }}"
 
-        - name: Elimina VCN
-          oracle.oci.oci_network_vcn:
-             vcn_id: "{{ vcns_id }}"
-             state: 'absent'
-          register: resultado
+        - name: Crea Internet Gateway 
+          oracle.oci.oci_network_internet_gateway:
+            compartment_id: "{{ compartment_ocid }}"
+            vcn_id: "{{ vcns_id }}"
+            name: "{{ ig_name }}"
+            is_enabled: true
 
-        - name: Valida que la VCN se Elimino
+        - name: Valida Creacion de Internet Gateway
           assert:
              that:
-               - resultado.changed == True
-               - resultado.vcn.display_name == display_name
       rescue:
 
         - fail:
-            msg: "ERROR, No se logro Eliminar VCN."
+            msg: "ERROR, No se Logro Crear Internet Gateway."
