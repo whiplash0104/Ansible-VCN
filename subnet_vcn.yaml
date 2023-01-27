@@ -28,7 +28,7 @@
           oracle.oci.oci_network_subnet:
             availability_domain: "{{ item.ad }}"
             cidr_block: "{{ item.cidr }}"
-            compartment_id: "{{ cluster_compartment }}"
+            compartment_id: "{{ compartment_ocid }}"
             display_name: "{{ item.subnet_name }}"
             vcn_id: '{{ vcns_id }}'
           loop:
