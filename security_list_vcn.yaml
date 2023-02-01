@@ -8,8 +8,8 @@
     - block:
         - name: Lista Todas las VCNs
           oracle.oci.oci_network_vcn_facts:
-             compartment_id: "{{ compartment_ocid }}"
-             display_name: "{{ display_name }}"
+            compartment_id: "{{ compartment_ocid }}"
+            display_name: "{{ display_name }}"
           register: resultado
 
         - name: Valida si Existe la VCN
@@ -18,7 +18,7 @@
               - resultado.vcns[0].display_name == display_name
 
         - set_fact:
-            vcns_id: "{{ resultado.vcns[0].id }}"
+          vcns_id: "{{ resultado.vcns[0].id }}"
 
         - name: Crea Security List para Load Balancers
           oracle.oci.oci_network_security_list:
@@ -29,8 +29,8 @@
             egress_security_rules: "{{ loaded_egress.egress_security_rules_for_lb }}"
           register: resultado
            
-        - debug:
-          msg: "{{ resultado }}"
+#        - debug:
+#          msg: "{{ resultado }}"
         
         - set_fact:
           lb_sec_list_id: "{{ result.security_list.id }}"
@@ -38,7 +38,7 @@
         - name: Valida Creacion de Security List en LB
           assert:
             that:
-      rescue:
 
+      rescue:
         - fail:
             msg: "ERROR, No se Logro Crear Security List en Load Balancer."
