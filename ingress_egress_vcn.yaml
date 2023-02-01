@@ -19,7 +19,7 @@
                 - resultado.vcns[0].display_name == display_name
 
         - set_fact:
-             vcns_id: "{{ resultado.vcns[0].id }}"
+             sl_id: "{{ resultado.vcns[0].default_security_list_id }}"
 
         - name: Copia Template de Ingress a /tmp
           template: src=./templates/ingress_security_rules.yaml.j2 dest=/tmp/ingress_security_rules.yaml
@@ -47,7 +47,7 @@
         
         - name: Agrega Reglas en Default Security List 
           oracle.oci.oci_network_security_list:
-            id: "{{ vcns_id.vcn.default_security_list_id }}"
+            id: "{{ sl_id }}"
             ingress_security_rules: "{{ loaded_ingress.ingress_security_rules_for_default_sec_list }}"
             egress_security_rules:  "{{ loaded_egress.egress_security_rules_for_default_sec_list }}"
             purge_security_rules: 'no'
