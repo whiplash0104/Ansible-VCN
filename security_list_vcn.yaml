@@ -14,11 +14,11 @@
 
         - name: Valida si Existe la VCN
           assert:
-           that:
-                - resultado.vcns[0].display_name == display_name
+            that:
+              - resultado.vcns[0].display_name == display_name
 
         - set_fact:
-          vcns_id: "{{ resultado.vcns[0].id }}"
+            vcns_id: "{{ resultado.vcns[0].id }}"
 
         - name: Crea Security List para Load Balancers
           oci_network_security_list:
@@ -32,8 +32,8 @@
         - debug:
           msg: "{{ resultado }}"
         
-       - set_fact:
-         lb_sec_list_id: "{{ result.security_list.id }}"
+        - set_fact:
+          lb_sec_list_id: "{{ result.security_list.id }}"
 
         - name: Valida Creacion de Security List en LB
           assert:
