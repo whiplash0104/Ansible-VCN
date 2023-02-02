@@ -59,7 +59,7 @@
         - debug:
             msg: "{{ resultado }}"
 
-        - name: Create a security list for load balancers
+        - name: Crea Security List Para Load Balancers
           oracle.oci.oci_network_security_list:
             name: "Load Balancers"
             compartment_id: "{{ compartment_ocid }}"
@@ -69,7 +69,31 @@
           register: resultado
 
         - debug:
+          msg: "{{ resultado }}"
+
+        - set_fact:
+          lb_sec_list_id: "{{ resultado.security_list.id }}"
+
+
+        - name: Crea Subnet Para Load Balancer en AD1 y AD2
+          oci_network_subnet:
+            name: "{{ item.name }}"
+            availability_domain: "{{ item.ad }}"
+            compartment_id: "{{ compartment_ocid }}"
+            cidr_block: "{{ item.cidr }}"
+            vcn_id: "{{ vcns_id }}"
+            security_list_ids:
+              - "{{ lb_sec_list_id }}"
+          loop:
+            - { name: '{{ lb_subnet1_name }}', ad: '{{ ad1 }}', cidr: '{{ lb_subnet1_cidr }}' }
+            - { name: '{{ lb_subnet2_name }}', ad: '{{ ad2 }}', cidr: '{{ lb_subnet2_cidr }}' }
+          register: result
+        - debug:
             msg: "{{ resultado }}"
+        - set_fact:
+            lb_subnet1_id: "{{ resultado.results[0].subnet.id }}"
+            lb_subnet2_id: "{{ resultado.results[1].subnet.id }}"
+
 
       rescue:
         - fail:
