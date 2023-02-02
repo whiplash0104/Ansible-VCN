@@ -1,4 +1,4 @@
-- name: Crea Internet Gateway
+- name: Crea Internet Gateway, Reglas de Ingress y Egress, SL y LB, Subnet LB
   hosts: localhost
   connection: local
 

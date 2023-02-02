@@ -1,4 +1,4 @@
-- name: Crea Internet Gateway
+- name: Crea Subnet 
   hosts: localhost
   connection: local
 
@@ -20,9 +20,6 @@
 
         - set_fact:
              vcns_id: "{{ resultado.vcns[0].id }}"
-
-
-
 
         - name: Crea Subnets
           oracle.oci.oci_network_subnet:
