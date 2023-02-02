@@ -21,6 +21,9 @@
         - set_fact:
              sl_id: "{{ resultado.vcns[0].default_security_list_id }}"
 
+        - set_fact:
+             vcns_id: "{{ resultado.vcns[0].id }}"
+
         - name: Copia Template de Ingress a /tmp
           template: src=./templates/ingress_security_rules.yaml.j2 dest=/tmp/ingress_security_rules.yaml
         
