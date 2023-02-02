@@ -32,9 +32,9 @@
 
         - name: Elimina Default Route para Salida a Internet
           oracle.oci.oci_network_route_table:
-            id: "{{ default_route_table_id }}"
-            purge_route_rules: true
-#            delete_route_rules: true
+            rt_id: "{{ network_entity_id }}"
+#            purge_route_rules: true
+            delete_route_rules: true
 
       rescue:
 
