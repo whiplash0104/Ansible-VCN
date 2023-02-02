@@ -4,41 +4,42 @@
 
   vars_files: vault.yaml
 
+
   tasks:
     - block:
         - name: Lista Todas las VCNs
           oracle.oci.oci_network_vcn_facts:
-            compartment_id: "{{ compartment_ocid }}"
-            display_name: "{{ display_name }}"
+             compartment_id: "{{ compartment_ocid }}"
+             display_name: "{{ display_name }}"
           register: resultado
 
         - name: Valida si Existe la VCN
           assert:
-            that:
-              - resultado.vcns[0].display_name == display_name
+             that:
+                - resultado.vcns[0].display_name == display_name
 
         - set_fact:
-          vcns_id: "{{ resultado.vcns[0].id }}"
+             vcns_id: "{{ resultado.vcns[0].id }}"
 
-        - name: Crea Security List para Load Balancers
-          oracle.oci.oci_network_security_list:
+        - name: Create a security list for load balancers
+          oci_network_security_list:
             name: "Load Balancers"
             compartment_id: "{{ compartment_ocid }}"
             vcn_id: "{{ vcns_id }}"
             ingress_security_rules: "{{ loaded_ingress.ingress_security_rules_for_lb }}"
             egress_security_rules: "{{ loaded_egress.egress_security_rules_for_lb }}"
-          register: resultado
-           
-#        - debug:
-#          msg: "{{ resultado }}"
-        
-        - set_fact:
-          lb_sec_list_id: "{{ result.security_list.id }}"
+          register: result
 
-        - name: Valida Creacion de Security List en LB
+        - debug:
+            msg: "{{ result }}"
+
+        - set_fact:
+            lb_sec_list_id: "{{ result.security_list.id }}"
+
+        - name: Valida Creacion de Internet Gateway
           assert:
-            that:
+             that:
 
       rescue:
         - fail:
-            msg: "ERROR, No se Logro Crear Security List en Load Balancer."
+            msg: "ERROR, No se Logro Crear Internet Gateway."

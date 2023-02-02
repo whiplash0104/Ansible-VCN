@@ -6,11 +6,11 @@
 # See LICENSE.TXT for details.
 egress_security_rules_for_default_sec_list:
   # stateless egress rule for the first worker node subnet
-  - is_stateless: yes
+  - is_stateless: true
     destination: "{{ subnet1_cidr }}"
     protocol: all
   # stateless egress rule for the second worker node subnet
-  - is_stateless: yes
+  - is_stateless: true
     destination: "{{ subnet2_cidr }}"
     protocol: all
   # stateless egress rule for the third worker node subnet
@@ -20,4 +20,4 @@ egress_security_rules_for_default_sec_list:
 egress_security_rules_for_lb:
   - destination: "{{ quad_zero_route }}"
     protocol: "{{ TCP_protocol }}"
-    is_stateless: yes
+    is_stateless: true
