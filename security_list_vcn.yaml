@@ -22,7 +22,7 @@
              vcns_id: "{{ resultado.vcns[0].id }}"
 
         - name: Create a security list for load balancers
-          oci_network_security_list:
+          oracle.oci.oci_network_security_list:
             name: "Load Balancers"
             compartment_id: "{{ compartment_ocid }}"
             vcn_id: "{{ vcns_id }}"
