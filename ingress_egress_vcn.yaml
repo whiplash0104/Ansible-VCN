@@ -87,10 +87,6 @@
           register: result
         - debug:
             msg: "{{ resultado }}"
-        - set_fact:
-            lb_subnet1_id: "{{ resultado.results[0].subnet.id }}"
-            lb_subnet2_id: "{{ resultado.results[1].subnet.id }}"
-
 
       rescue:
         - fail:
