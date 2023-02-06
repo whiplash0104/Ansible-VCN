@@ -68,9 +68,6 @@
             egress_security_rules: "{{ loaded_egress.egress_security_rules_for_lb }}"
           register: resultado
 
-        - debug:
-          msg: "{{ resultado }}"
-
         - set_fact:
           lb_sec_list_id: "{{ resultado.security_list.id }}"
 
