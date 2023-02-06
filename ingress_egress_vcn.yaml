@@ -69,11 +69,11 @@
           register: resultado
 
         - set_fact:
-          lb_sec_list_id: "{{ resultado.security_list.id }}"
+            lb_sec_list_id: "{{ resultado.security_list.id }}"
 
 
         - name: Crea Subnet Para Load Balancer en AD1 y AD2
-          oci_network_subnet:
+          oracle.oci.oci_network_subnet:
             name: "{{ item.name }}"
             availability_domain: "{{ item.ad }}"
             compartment_id: "{{ compartment_ocid }}"
